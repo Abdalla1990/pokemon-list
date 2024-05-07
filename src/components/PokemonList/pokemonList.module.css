@@ -1,0 +1,27 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.itemsContainer {
+  min-height: 40rem;
+}
+
+.item {
+  display: flex;
+  border-bottom: 1px solid black;
+  padding: 1rem 0;
+}
+
+.name {
+  display: flex;
+  margin: auto 0;
+  margin-left: 3rem;
+}
+
+.paginationContainer {
+  display: flex;
+  padding-top: 3rem;
+  justify-content: space-between;
+}

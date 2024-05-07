@@ -1,0 +1,14 @@
+.itemContainer {
+  display: flex;
+  border-bottom: 1px solid black;
+}
+
+.itemKey {
+  width: 4rem;
+  padding: 0.5rem 0;
+}
+
+.itemValue {
+  padding-left: 0.5rem;
+  padding: 0.5rem 0;
+}

@@ -42,4 +42,4 @@ export type PokemonListResponseType = {
   hasNextPage: boolean;
 }
 
-export type RootState = any // normally inferred from state
+export type RootState = any // normally inferred from state but not really a big deal for this app since we dont strcture the state any different than RTK Queries strcture

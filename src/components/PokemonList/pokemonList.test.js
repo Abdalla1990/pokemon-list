@@ -1,6 +1,6 @@
 
 import React from "react";
-import { act, fireEvent, render } from "@testing-library/react";
+import { act, fireEvent, render, waitFor } from "@testing-library/react";
 import  PokemonList  from "./PokemonList";
 import { Provider } from 'react-redux'
 import { store } from "../../store";
@@ -39,9 +39,6 @@ describe("PokemonList", () => {
         count: 0,
         hasNextPage: true
       },
-      isError: false,
-      isFetching: false,
-      isSuccess: true
     });
 
     Hooks.useFetchPokemonsDetails.mockReturnValue({
@@ -50,8 +47,11 @@ describe("PokemonList", () => {
         artWork: "/test-artwork",
         height: 100,
         weight: 100
-      }]
-    })
+      }],
+      isError: false,
+      isFetching: false,
+      isSuccess: true
+    });
   });
   
   afterEach(() => {
@@ -66,58 +66,67 @@ describe("PokemonList", () => {
   });
 
   it("should render the loading state if the api is still fetching", async () => {
-    Queries.useGetAllPokemonsQuery.mockReturnValue({
-      data: {
-        pokemonList: [mockedPokemon],
-        count: 0,
-        hasNextPage: true
-      },
+    
+
+    Hooks.useFetchPokemonsDetails.mockReturnValue({
+      pokemons: [{
+        ...mockedPokemon,
+        artWork: "/test-artwork",
+        height: 100,
+        weight: 100
+      }],
       isError: false,
       isFetching: true,
       isSuccess: true
     });
+
     const { getByTestId } = await act(() => render(<RenderPokemonList />));
     expect(getByTestId("loading-container")).toBeInTheDocument();
   });
 
   it("should render the error state if the api is still fetching", async () => {
-    Queries.useGetAllPokemonsQuery.mockReturnValue({
-      data: {
-        pokemonList: [mockedPokemon],
-        count: 0,
-        hasNextPage: true
-      },
+  
+    Hooks.useFetchPokemonsDetails.mockReturnValue({
+      pokemons: [{
+        ...mockedPokemon,
+        artWork: "/test-artwork",
+        height: 100,
+        weight: 100
+      }],
       isError: true,
       isFetching: false,
       isSuccess: false
     });
+
     const { getByTestId } = await act(() => render(<RenderPokemonList />));
     expect(getByTestId("error-container")).toBeInTheDocument();
+  });
+
+  it("the previous button should be enabled when the cursor is > 0", async () => {
+    // it is not best practice to mock react state and test the behaviour, we should write tests that
+    // mocks the behaviour of the component when UI interactions happen.
+    // Thats why we click on the next button then check the previous button's disabled state here!
+    const { getByTestId } = await act(() => render(<RenderPokemonList />));
+    fireEvent.click(getByTestId("next-button"));
+    await waitFor(() => {
+      expect(getByTestId("previous-button").disabled).toEqual(false);
+    });
   });
 
   it("the next page button is disabled when the hasNextPage is false", async () => {
     Queries.useGetAllPokemonsQuery.mockReturnValue({
       data: {
         pokemonList: [mockedPokemon],
-        count: 100,
+        count: 0,
         hasNextPage: false
       },
-      isError: false,
-      isFetching: false,
-      isSuccess: true
     });
+  
     const { getByTestId } = await act(() => render(<RenderPokemonList />));
     expect(getByTestId("next-button").disabled).toEqual(true);
   });
 
 
-  it.only("the previous button should be enabled when the cursor is > 0", async () => {
-    // it is not best practice to mock react state and test the behaviour, we should write tests that
-    // mocks the behaviour of the component when UI interactions happen.
-    // Thats why we click on the next button then check the previous button's disabled state here!
-    const { getByTestId } = await act(() => render(<RenderPokemonList />));
-    fireEvent.click(getByTestId("next-button"));
-    expect(getByTestId("previous-button").disabled).toEqual(false);
-  })
+  
 
 })

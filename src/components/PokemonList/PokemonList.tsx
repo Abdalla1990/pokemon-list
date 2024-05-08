@@ -20,10 +20,11 @@ type UseGetAllPokemonsQueryType = {
 const PokemonList:React.FC = () => {
   const [cursor, setCursor] = React.useState(0);  
   const { data =
-    { count: 0, pokemonList: [{}], hasNextPage: true }, isError, isFetching }: UseGetAllPokemonsQueryType =
-    useGetAllPokemonsQuery(cursor); // is Loading here is for the list, not the items, thats why we have a flickery behaviour
-  const { pokemons } = useFetchPokemonsDetails({ data });
-  console.log({ cursor });
+    { count: 0, pokemonList: [{}], hasNextPage: true } }: UseGetAllPokemonsQueryType =
+    useGetAllPokemonsQuery(cursor);
+
+  const { pokemons, isError, isFetching } = useFetchPokemonsDetails({ data });
+
   const PaginationButtons:React.FC = React.useCallback(() => (
     <span className={styles.paginationContainer}>
       <p>Viewing {cursor} of {data?.count}</p>

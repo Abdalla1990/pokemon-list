@@ -33,11 +33,22 @@ describe("fetchPokemonsDetails", () => {
       url: "/test-url/",
     }]);
   });
+
   it("returns an empty array if the pokemonList is empty", async () => {
     const result = await fetchPokemonsDetails({
       pokemonList: [],
     });
 
     expect(result.details).toEqual([]);
+  });
+
+  it("returns the status of the queries", async () => {
+    const result = await fetchPokemonsDetails({
+      pokemonList: [{ name: " neame", url: "/test-url/1/" }],
+    });
+
+    expect(result.promisesStatus).toEqual([
+      "fulfilled",
+    ]);
   })
 })

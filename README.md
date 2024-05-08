@@ -47,3 +47,7 @@ The app is configured to run the test files, you can run the test suit by runnin
 ```bash
 npm run test
 ```
+
+# App Url 
+
+The app is deployed to Vercel: https://pokemon-list-pied.vercel.app/

@@ -10,7 +10,7 @@ function isHydrateAction(action: Action): action is PayloadAction<RootState> {
 
 export const Api = createApi({
   reducerPath: 'pokemons',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://pokeapi.co/api/v2/' }), // this should be stored in .env or added to env vars in github for env-specific urls.
+  baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_POKEMON_LIST_API }), // this is a client-side call. We can make it a server-side by exposing an end point on the node server and make the call there. But it is an overkill for this example.
   extractRehydrationInfo(action, { reducerPath }): any {
     if (isHydrateAction(action)) { // for SSR
       return action.payload[reducerPath]
